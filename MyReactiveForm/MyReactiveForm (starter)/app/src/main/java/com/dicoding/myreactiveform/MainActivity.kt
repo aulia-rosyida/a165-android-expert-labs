@@ -2,13 +2,13 @@ package com.dicoding.myreactiveform
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Patterns
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.dicoding.myreactiveform.databinding.ActivityMainBinding
 import com.jakewharton.rxbinding2.widget.RxTextView
+import io.reactivex.Observable
+import io.reactivex.functions.Function3
 
 /**
 Terdapat beberapa masalah yang dapat diatasi dengan Reactive Programming, yaitu seperti :
@@ -51,6 +51,42 @@ class MainActivity : AppCompatActivity() {
             showPasswordMinimalAlert(it)
         }
 
+        //confirm password sedikit berbeda, karena perlu mengecek  pada dua inputan sekaligus,
+        // yaitu pada ed_password dan ed_confirm_password.
+        // Karena itulah kita perlu menggabungkan dua data tersebut dengan operator merge
+        val passwordConfirmationStream = Observable.merge(
+            RxTextView.textChanges(binding.edPassword)
+                .map { password ->
+                    password.toString() != binding.edConfirmPassword.text.toString()
+                },
+            RxTextView.textChanges(binding.edConfirmPassword)
+                .map { confirmPassword ->
+                    confirmPassword.toString() != binding.edPassword.text.toString()
+                }
+        )
+        passwordConfirmationStream.subscribe {
+            showPasswordConfirmationAlert(it)
+        }
+
+
+        // Terakhir, kita perlu membaca ketiga data stream tersebut untuk menentukan apakah tombol diaktifkan atau tidak.
+        // Maka diperlukan operator combineLatest
+        val invalidFieldsStream = Observable.combineLatest(
+            emailStream,
+            passwordStream,
+            passwordConfirmationStream,
+            Function3 { emailInvalid: Boolean, passwordInvalid: Boolean, passwordConfirmationInvalid: Boolean ->
+                !emailInvalid && !passwordInvalid && !passwordConfirmationInvalid
+            })
+        invalidFieldsStream.subscribe { isValid ->
+            if (isValid) {
+                binding.btnRegister.isEnabled = true
+                binding.btnRegister.setBackgroundColor(ContextCompat.getColor(this, R.color.purple_500))
+            } else {
+                binding.btnRegister.isEnabled = false
+                binding.btnRegister.setBackgroundColor(ContextCompat.getColor(this, android.R.color.darker_gray))
+            }
+        }
     }
 
     private fun showEmailExistAlert(isNotValid: Boolean) {
