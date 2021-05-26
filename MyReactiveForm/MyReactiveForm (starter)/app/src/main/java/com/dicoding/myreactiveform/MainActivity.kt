@@ -31,15 +31,30 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        /** Anda membuat variabel data stream baru saat melakukan subscribe
+         *
+         * mengapa perlu dibuat variabel seperti emailStream, passwordStream, dll?
+         * Hal ini karena Anda memerlukan data stream tersebut untuk menentukan Button aktif atau tidak.
+         * Ingat bahwa Button aktif ketika semua validasi tidak menghasilkan eror
+         * */
+
         //data stream dari inputan Email dilanjutkan dengan subscribe ke stream tersebut
-        val emailStream = RxTextView.textChanges(binding.edEmail)
-            .skipInitialValue()
-            .map { email ->
+        val emailStream = RxTextView.textChanges(binding.edEmail) /**untuk membaca setiap perubahan pada EditText dan mengubahnya menjadi data stream. */
+            .skipInitialValue() /**  operator skipInitialValue() untuk menghiraukan input awal.
+                                        Hal ini bertujuan supaya aplikasi tidak langsung menampilkan eror pada saat pertama kali dijalankan. */
+            .map { email -> //operator map dan memeriksa apakah format valid.
+                            // Jika format tidak valid maka ia akan mengembalikan nilai TRUE
                 !Patterns.EMAIL_ADDRESS.matcher(email).matches()
             }
         emailStream.subscribe {
-            showEmailExistAlert(it)
+            showEmailExistAlert(it) // saat subscribe, kita memanggil fungsi showEmailExistAlert(it) untuk menampilkan peringatan jika hasilnya TRUE.
         }
+
+        /**
+        emailStream.subscribe { isValid ->
+        showEmailExistAlert(isValid)
+        }
+         * */
 
         //hal yang sama untuk inputan password
         val passwordStream = RxTextView.textChanges(binding.edPassword)
@@ -54,7 +69,7 @@ class MainActivity : AppCompatActivity() {
         //confirm password sedikit berbeda, karena perlu mengecek  pada dua inputan sekaligus,
         // yaitu pada ed_password dan ed_confirm_password.
         // Karena itulah kita perlu menggabungkan dua data tersebut dengan operator merge
-        val passwordConfirmationStream = Observable.merge(
+        val passwordConfirmationStream = Observable.merge( /** Menggabungkan Observable dengan Merge.  operator merge hanya menggabungkan datanya saja */
             RxTextView.textChanges(binding.edPassword)
                 .map { password ->
                     password.toString() != binding.edConfirmPassword.text.toString()
@@ -69,9 +84,12 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        // Terakhir, kita perlu membaca ketiga data stream tersebut untuk menentukan apakah tombol diaktifkan atau tidak.
-        // Maka diperlukan operator combineLatest
-        val invalidFieldsStream = Observable.combineLatest(
+        /**  operator combineLatest untuk menggabungkan ketiga data stream dan menghasilkan 1 output data stream baru
+         *   Dalam kasus ini, Anda mengubah inputan dari ketiga data stream.
+         *   Di mana apabila semua inputan valid, maka akan menghasilkan nilai baru, yaitu TRUE.
+         * */
+
+        val invalidFieldsStream = Observable.combineLatest( /**combineLatest kita menggabungkan dan mengubah data di dalamnya */
             emailStream,
             passwordStream,
             passwordConfirmationStream,
