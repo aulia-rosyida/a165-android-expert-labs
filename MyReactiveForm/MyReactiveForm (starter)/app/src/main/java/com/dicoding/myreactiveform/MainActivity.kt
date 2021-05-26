@@ -8,11 +8,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.dicoding.myreactiveform.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+/**
+Terdapat beberapa masalah yang dapat diatasi dengan Reactive Programming, yaitu seperti :
+1. Menggunakan flag(tanda) berupa boolean untuk menentukan suatu form valid atau tidak,
+dalam hal ini yaitu emailValid, passwordValid, passwordConfirmationValid.
+Sehingga, harus meng-update dan memeriksa satu per satu flag tersebut.
 
-    private var emailValid = false
-    private var passwordValid = false
-    private var passwordConfirmationValid = false
+2. Terdapat tiga TextWatcher yang semuanya memiliki beberapa method kosong
+yang hanya sebagai syarat callback dari TextWatcher.
+
+3. Kode untuk UI dan logic bercampur satu sama lain.
+ * */
+class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
 
@@ -21,93 +28,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        validateButton()
-
-        binding.edEmail.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                validateEmail()
-            }
-        })
-
-        binding.edPassword.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                validatePassword()
-            }
-        })
-
-        binding.edConfirmPassword.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                validatePasswordConfirmation()
-            }
-        })
-    }
-
-    fun validateEmail() {
-        // jika password tidak valid tampilkan peringatan
-        val input = binding.edEmail.text.toString()
-        if (!Patterns.EMAIL_ADDRESS.matcher(input).matches()) {
-            emailValid = false
-            showEmailExistAlert(true)
-        } else {
-            emailValid = true
-            showEmailExistAlert(false)
-        }
-        validateButton()
-    }
-
-    fun validatePassword() {
-        // jika password < 6 karakter tampilkan peringatan
-        val input = binding.edPassword.text.toString()
-        if (input.length < 6) {
-            passwordValid = false
-            showPasswordMinimalAlert(true)
-        } else {
-            passwordValid = true
-            showPasswordMinimalAlert(false)
-        }
-        validateButton()
-    }
-
-    fun validatePasswordConfirmation() {
-        // jika konfirmasi password tidak sesuai tampilkan peringatan
-        val input = binding.edConfirmPassword.text.toString()
-        if (input != binding.edPassword.text.toString()) {
-            passwordConfirmationValid = false
-            showPasswordConfirmationAlert(true)
-        } else {
-            passwordConfirmationValid = true
-            showPasswordConfirmationAlert(false)
-        }
-        validateButton()
-    }
-
-    private fun validateButton() {
-        // jika semua field sudah terisi, enable button submit
-        if (emailValid && passwordValid && passwordConfirmationValid) {
-            binding.btnRegister.isEnabled = true
-            binding.btnRegister.setBackgroundColor(ContextCompat.getColor(this, R.color.purple_500))
-        } else {
-            binding.btnRegister.isEnabled = false
-            binding.btnRegister.setBackgroundColor(ContextCompat.getColor(this, android.R.color.darker_gray))
-        }
     }
 
     private fun showEmailExistAlert(isNotValid: Boolean) {
