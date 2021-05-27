@@ -15,6 +15,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        /** aplikasi masih menginisialisasi objek di dalam Activity yang sama.
+         * Hal ini membuat objek saling terikat (coupled) yang berakibat pada kode menjadi sulit untuk di-maintain dan dites.
+         * Untuk itu kita akan menggunakan Koin untuk men-generate kode ini secara otomatis.*/
         val sesi = SessionManager(this)
         userRepository = UserRepository.getInstance(sesi)
 
