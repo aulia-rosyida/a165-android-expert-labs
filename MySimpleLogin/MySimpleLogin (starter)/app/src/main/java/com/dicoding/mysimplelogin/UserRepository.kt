@@ -7,7 +7,7 @@ import javax.inject.Singleton
 /** tambahkan injection pada constructor dan scope singleton.
  * Dengan begitu Anda bisa menghapus kode untuk membuat Singleton yang secara manual.*/
 
-@Singleton
+//@Singleton
 class UserRepository @Inject constructor(private val sesi: SessionManager) {
 
     /** belajar memeriksa apakah benar object UserRepository yang dibuat pada latihan ini
