@@ -6,6 +6,7 @@ import android.os.Bundle
 import com.dicoding.mysimplelogin.databinding.ActivityMainBinding
 import javax.inject.Inject
 
+/** Menambahkan fungsi Inject untuk setiap Activity/Fragment yang membutuhkan, dalam hal ini yaitu MainActivity dan HomeActivity. */
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
@@ -19,7 +20,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var userRepository2: UserRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (application as MyApplication).appComponent.inject(this)
+        (application as MyApplication).appComponent.inject(this) //Jangan lupa untuk meng-inject component sebelum super.onCreate terlebih dahulu.
 
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)

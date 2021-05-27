@@ -8,12 +8,17 @@ import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
 
-@Singleton
-@Component(modules = [StorageModule::class])
+/**  kode untuk inject pada UserRepository  */
+
+//@Singleton ada karena di dalam object yang di-inject terdapat @Singleton juga. Jif not, eror -> IncompatiblyScopedBindings.
+@Singleton //Jangan lupa untuk menambahkan annotation @Singleton pada Component juga
+@Component(modules = [StorageModule::class]) //Untuk buat component need annotation @Component. if not, eror -> @Component.Factory types must be nested within a @Component.
+                      //Untuk menambahkan module di dalam parameter modules harus menggunakan format Array
 interface AppComponent {
     @Component.Factory
     interface Factory {
         fun create(@BindsInstance context: Context): AppComponent
+                    //Jika ada objek yang membutuhkan Context, Anda perlu menambahkan @BindsInstance. if not, eror -> MissingBinding Context.
     }
 
     fun inject(activity: MainActivity)

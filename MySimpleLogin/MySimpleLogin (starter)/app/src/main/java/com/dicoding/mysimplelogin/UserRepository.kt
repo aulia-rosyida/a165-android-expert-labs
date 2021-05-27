@@ -5,9 +5,14 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 /** tambahkan injection pada constructor dan scope singleton.
- * Dengan begitu Anda bisa menghapus kode untuk membuat Singleton yang secara manual.*/
+ * Dengan begitu Anda bisa menghapus kode untuk membuat Singleton yang secara manual.
+ *
+ * Karena UserRepository hanya membutuhkan SessionManager — dan ingat bahwa SessionManager sudah kita provide di dalam module —,
+ * maka Anda dapat menggunakan Injection pada constructor.
+ * Caranya yaitu dengan menambahkan @Inject constructor.
+ * if not, eror -> MissingBinding UserRepository.*/
 
-//@Singleton
+@Singleton //tidak ada lagi fungsi getInstance. Anda cukup menambahkan annotation @Singleton
 class UserRepository @Inject constructor(private val sesi: SessionManager) {
 
     /** belajar memeriksa apakah benar object UserRepository yang dibuat pada latihan ini
