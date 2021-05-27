@@ -14,6 +14,8 @@ class MainActivityTest : KoinTest {
     private val userRepository: UserRepository by inject()
     private val username = "dicoding"
 
+    /** Untuk melakukan Testing pada Koin Anda perlu memanggil module pada koin dengan menggunakan loadKoinModules.
+     * Dan jika testing sudah usai Anda dapat menutupnya dengan menggunakan stopKoin.*/
     @Before
     fun before() {
         loadKoinModules(storageModule)

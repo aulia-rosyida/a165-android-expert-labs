@@ -9,6 +9,9 @@ import org.koin.android.ext.android.inject
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
+
+    /** Sudah tidak ada lagi kode untuk inisialisasi Objek di sini.
+     * Anda cukup menambahkan by inject() pada field yang ingin di-inject. */
     val userRepository: UserRepository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
