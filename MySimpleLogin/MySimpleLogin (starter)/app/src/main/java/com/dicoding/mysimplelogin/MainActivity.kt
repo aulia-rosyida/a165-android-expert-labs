@@ -4,7 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.dicoding.mysimplelogin.databinding.ActivityMainBinding
-import org.koin.android.ext.android.inject
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
@@ -12,9 +12,12 @@ class MainActivity : AppCompatActivity() {
 
     /** Sudah tidak ada lagi kode untuk inisialisasi Objek di sini.
      * Anda cukup menambahkan by inject() pada field yang ingin di-inject. */
-    val userRepository: UserRepository by inject()
+    @Inject
+    lateinit var userRepository: UserRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        (application as MyApplication).appComponent.inject(this)
+
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
