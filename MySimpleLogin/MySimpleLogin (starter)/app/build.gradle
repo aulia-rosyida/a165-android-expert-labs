@@ -50,4 +50,7 @@ dependencies {
     //tambahkan library
     implementation "org.koin:koin-core:2.1.6"
     implementation "org.koin:koin-android:2.1.6"
+
+    //testing koin
+    androidTestImplementation "org.koin:koin-test:2.1.6"
 }
