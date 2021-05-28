@@ -38,6 +38,7 @@ android {
 }
 
 dependencies {
+    //Hal ini dapat Anda lakukan karena menambahkan kode berikut pada build.gradle (Module: app):
     implementation project(":core")
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"

@@ -3,7 +3,7 @@ package com.dicoding.mysimplelogin
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.dicoding.auliarosyida.core.UserRepository
+import com.dicoding.auliarosyida.core.UserRepository //Perhatikanlah kelas MainActivity. Saat ini kelas SessionManager di-import dari module core
 import com.dicoding.mysimplelogin.databinding.ActivityMainBinding
 import javax.inject.Inject
 
