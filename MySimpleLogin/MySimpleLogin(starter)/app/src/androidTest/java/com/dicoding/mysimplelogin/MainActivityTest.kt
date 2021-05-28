@@ -1,5 +1,6 @@
 package com.dicoding.mysimplelogin
 
+import com.dicoding.auliarosyida.core.UserRepository
 import junit.framework.TestCase.assertEquals
 import org.junit.After
 import org.junit.Before

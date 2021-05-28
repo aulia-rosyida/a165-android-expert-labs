@@ -1,4 +1,4 @@
-package com.dicoding.mysimplelogin
+package com.dicoding.auliarosyida.core
 
 import android.util.Log
 import javax.inject.Inject
