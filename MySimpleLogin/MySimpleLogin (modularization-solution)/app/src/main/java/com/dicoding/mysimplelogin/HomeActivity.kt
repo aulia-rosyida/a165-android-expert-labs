@@ -39,7 +39,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun moveToChatActivity() {
-        startActivity(Intent(this, Class.forName("com.dicoding.mysimplelogin.chat.ChatActivity")))
+        startActivity(Intent(this, Class.forName("com.dicoding.auliarosyida.mysimplelogin.chat.ChatActivity")))
     }
 
     private fun moveToMainActivity() {
